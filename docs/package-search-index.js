@@ -1,0 +1,1 @@
+packageSearchIndex = [{"l":"All Packages","u":"allpackages-index.html"},{"l":"me.thiagorigonatti.capitalgains.core"},{"l":"me.thiagorigonatti.capitalgains.exception"},{"l":"me.thiagorigonatti.capitalgains.util"}];updateSearchResults();
