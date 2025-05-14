@@ -1,0 +1,5 @@
+Dockerfile text eol=lf
+gradlew text eol=lf
+Jenkinsfile text eol=lf
+.gitignore text eol=lf
+build.gradle.kts text eol=lf
