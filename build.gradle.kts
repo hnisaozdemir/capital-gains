@@ -6,7 +6,7 @@ plugins {
 }
 
 group = "me.thigorigonatti"
-version = "1.0"
+version = "1.1"
 description = "NuBank challenge, CLI tax calculator on buying and selling shares."
 
 repositories {

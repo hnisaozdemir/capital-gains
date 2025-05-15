@@ -20,7 +20,7 @@ import static org.junit.jupiter.api.Assertions.*;
  * for various scenarios including sales with profit, losses, and different cost methods.
  *
  * @author <a href="https://github.com/thiagorigonatti">Thiago Rigonatti</a>
- * @version 1.0
+ * @version 1.1
  * @since 1.0
  */
 public class TaxCalculatorTest {
@@ -327,5 +327,27 @@ public class TaxCalculatorTest {
 
         assertThrows(ZeroOrNegativeQuantityException.class, () -> getTax(input, 0));
         assertThrows(ZeroOrNegativeQuantityException.class, () -> getTax(input2, 0));
+    }
+
+    /**
+     * Test case for calculating tax when there are multiple stock transactions involving different tickers.
+     * It verifies that the tax is correctly calculated based on the net profit or loss for each ticker.
+     * The test ensures that transactions for different tickers are handled separately,
+     * and the calculation of tax takes into account accumulated gains and losses.
+     *
+     * @throws JsonProcessingException if there is an error processing the JSON input
+     */
+    @Test
+    public void givenMultipleTransactionsForDifferentTickers_whenCalculatingTax_thenTaxIsCalculatedBasedOnNetProfit() throws JsonProcessingException {
+
+        final String input = """
+                [{"operation":"buy", "ticker":"MANU", "unit-cost":250.00, "quantity":1000},{"operation":"buy", "ticker":"AAPL","unit-cost":750.00, "quantity":1000},{"operation":"sell", "ticker":"MANU", "unit-cost":210.00, "quantity":500},{"operation":"sell", "ticker":"MANU", "unit-cost":300.00, "quantity":500},{"operation":"sell", "ticker":"AAPL","unit-cost":755.00, "quantity":1000}]
+                """;
+
+        assertEquals(BigDecimal.ZERO.setScale(1, RoundingMode.HALF_EVEN), getTax(input, 0));
+        assertEquals(BigDecimal.ZERO.setScale(1, RoundingMode.HALF_EVEN), getTax(input, 1));
+        assertEquals(BigDecimal.ZERO.setScale(1, RoundingMode.HALF_EVEN), getTax(input, 2));
+        assertEquals(BigDecimal.valueOf(1_000).setScale(1, RoundingMode.HALF_EVEN), getTax(input, 3));
+        assertEquals(BigDecimal.valueOf(1_000).setScale(1, RoundingMode.HALF_EVEN), getTax(input, 4));
     }
 }

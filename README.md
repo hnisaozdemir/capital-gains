@@ -12,13 +12,13 @@
 📄 Leia em outro idioma: [Inglês](README_EN.md)
 
 # Calculadora de imposto sobre ganho de capital
-Calcula o imposto sobre o ganho de capital de operações financeiras de compra e venda de ações. A plicação processa as operações de forma sequencial, levando em conta o lucro obtido e aplicando a alíquota de 20% sobre o lucro, com possibilidade de compensar prejuízos acumulados.
+Calcula o imposto sobre o ganho de capital de operações financeiras de compra e venda de ações. A aplicação processa as operações de forma sequencial, levando em conta o lucro obtido e aplicando a alíquota de 20% sobre o lucro, com possibilidade de compensar prejuízos acumulados.
 
 ![Demo](demo.gif)
 
 ---
 ## 📐 Decisões técnicas e arquiteturais
-- **Linguagem de progrmação**: O projeto foi desenvolvido em **Java**.
+- **Linguagem de programação**: O projeto foi desenvolvido em **Java**.
 - **Entrada e Saída**: A entrada e saída são em **JSON**, garantindo uma interface moderna e compatível com sistemas externos.
 - **Estrutura Modular**: O projeto foi dividido em classes com responsabilidades claras, facilitando manutenção e testes.
 ---
