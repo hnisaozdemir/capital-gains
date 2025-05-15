@@ -10,7 +10,9 @@ import java.io.*;
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 
@@ -23,7 +25,7 @@ import java.util.function.Supplier;
  * flushing, and execution time tracking.</p>
  *
  * @author <a href="https://github.com/thiagorigonatti">Thiago Rigonatti</a>
- * @version 1.0
+ * @version 1.1
  * @since 1.0
  */
 
@@ -289,17 +291,25 @@ public class TaxCalculator {
 
 
     /**
-     * Parses a JSON-formatted string representing a list of operations, applies optional filtering,
-     * processes each operation to calculate a tax, and returns the result as an {@link ArrayNode}.
+     * Parses a JSON-formatted string representing a list of operations, processes each operation to calculate a tax,
+     * and returns the result as an {@link ArrayNode}. The tax calculation now considers the {@code ticker} field
+     * for each operation, ensuring that tax is calculated separately for different stocks.
      * <p>
-     * Each operation is processed using the {@code processOperation} method, and the resulting tax is
-     * formatted using {@code decimalFormat} and added to the returned JSON array as an object with a {@code "tax"} field.
+     * Each operation is processed using the {@code processOperation} method, and the resulting tax is formatted
+     * using {@code decimalFormat} and added to the returned JSON array as an object with a {@code "tax"} field.
      * </p>
      *
      * <p><strong>Filtering:</strong></p>
      * <ul>
      *   <li>If {@code operationPredicate} is set, it is used to filter the operations.</li>
      *   <li>If not set, all operations are processed.</li>
+     * </ul>
+     *
+     * <p><strong>Ticker Logic:</strong></p>
+     * <ul>
+     *   <li>The tax calculation now groups operations by their {@code ticker} value, meaning that each stock's tax
+     *   is calculated independently, considering the operations for that specific stock.</li>
+     *   <li>The operations for the same ticker are accumulated and processed together.</li>
      * </ul>
      *
      * @param line the input JSON string representing a list of operations
@@ -310,13 +320,14 @@ public class TaxCalculator {
 
         final List<Operation> operationList = this.objectMapper.readerForListOf(Operation.class).readValue(line);
         final ArrayNode arrayNode = this.objectMapper.createArrayNode();
-        final Stock stock = this.stockSupplier.get();
+        final Map<String, Stock> stocksByTicker = new HashMap<>();
 
         final Predicate<Operation> operationPredicate = this.operationPredicate != null
                 ? this.operationPredicate
                 : operation -> true;
 
         operationList.stream().filter(operationPredicate).forEach(op -> {
+            final Stock stock = stocksByTicker.computeIfAbsent(op.ticker(), key -> this.stockSupplier.get());
             final BigDecimal taxa = processOperation(op, stock);
             arrayNode.add(this.objectMapper.createObjectNode().put("tax", this.decimalFormat.format(taxa)));
         });
