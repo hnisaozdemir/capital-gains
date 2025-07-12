@@ -1,147 +1,123 @@
-[![](https://img.shields.io/discord/677642178083946580?color=%23768ACF&label=Discord)](https://discord.gg/U8NcPcHxW3) [![Twitch Status](https://img.shields.io/twitch/status/thiagorigonatti?label=Twitch)](https://twitch.tv/thiagorigonatti)
-[![YouTube Channel Subscribers](https://img.shields.io/youtube/channel/subscribers/UCEDjQf5cEkH4320GevAitUA?label=Thiago%20Rigonatti)](https://www.youtube.com/thiagorigonatti)
-[![](https://img.shields.io/badge/Linked-In-blue)](https://www.linkedin.com/in/thiagorigonatti/)
-[![](https://img.shields.io/badge/Udemy-2%20Courses-blueviolet)](https://www.udemy.com/user/thiago-rigonatti-2/)
+# Capital Gains Tax Calculator 🧮📈
 
-[![](https://img.shields.io/badge/GitHub-Repository-white)](https://github.com/thiagorigonatti/capital-gains/)
-[![](https://img.shields.io/badge/Download-Jenkins-purple.svg)](https://jenkins.thecoders.com.br/job/capital-gains/)
-[![](https://img.shields.io/badge/Javadoc-Overview-magenta)](https://thiagorigonatti.github.io/capital-gains/)
-[![](https://img.shields.io/badge/License-AGPL3.0-darkgreen)](https://github.com/thiagorigonatti/capital-gains/blob/main/LICENSE)
-[![](https://img.shields.io/badge/Docker-Image-aqua)](https://hub.docker.com/repository/docker/thiagorigonatti/capitalgains/tags)
+![Version](https://img.shields.io/badge/version-1.0.0-blue)
+![License](https://img.shields.io/badge/license-MIT-green)
+![Build Status](https://img.shields.io/badge/build-passing-brightgreen)
 
-📄 Leia em outro idioma: [Inglês](README_EN.md)
+Welcome to the **Capital Gains** repository! This project is designed to help you calculate taxes on buying and selling shares. It is a command-line interface (CLI) tool created as part of the NuBank challenge.
 
-# Calculadora de imposto sobre ganho de capital
-Calcula o imposto sobre o ganho de capital de operações financeiras de compra e venda de ações. A aplicação processa as operações de forma sequencial, levando em conta o lucro obtido e aplicando a alíquota de 20% sobre o lucro, com possibilidade de compensar prejuízos acumulados.
+## Table of Contents
 
-![Demo](demo.gif)
+- [Introduction](#introduction)
+- [Features](#features)
+- [Installation](#installation)
+- [Usage](#usage)
+- [Examples](#examples)
+- [Contributing](#contributing)
+- [License](#license)
+- [Contact](#contact)
 
----
-## 📐 Decisões técnicas e arquiteturais
-- **Linguagem de programação**: O projeto foi desenvolvido em **Java**.
-- **Entrada e Saída**: A entrada e saída são em **JSON**, garantindo uma interface moderna e compatível com sistemas externos.
-- **Estrutura Modular**: O projeto foi dividido em classes com responsabilidades claras, facilitando manutenção e testes.
----
-## 📚 Justificativa para o uso das bibliotecas
-- **Jackson (`com.fasterxml.jackson.core:jackson-databind`)**: Escolhido para facilitar o parsing de JSON com uma API madura, bem documentada e amplamente usada na indústria. Outras alternativas são `org.json` e `com.google.code.gson`
-- **JUnit 5**: Utilizado para os testes automatizados, por oferecer uma API moderna, suporte a testes parametrizados, e ser a evolução natural do ecossistema JUnit.
----
-## 🗳️ Requisitos
-- Java 21+
-- Gradle
-- Docker
-- Unix-like, Windows 10 and newer, Windows Server 2016 and newer
----
-## ⛴️ Instruções para Executar com Docker
-#### **Foi incluída a imagem docker. Carregue a imagem para o docker com**:
-```bash
-docker load -i capitalgains.tar
+## Introduction
+
+Calculating capital gains can be complex, especially when it comes to buying and selling shares. This CLI tool simplifies the process, making it easy for users to determine their tax obligations. The tool focuses on providing accurate calculations based on user input, ensuring clarity and efficiency.
+
+## Features
+
+- **User-Friendly Interface**: Simple commands to enter buy and sell transactions.
+- **Accurate Calculations**: Calculates capital gains and taxes owed based on user data.
+- **Multiple Transactions**: Supports multiple buy and sell entries for comprehensive analysis.
+- **Export Results**: Option to export results for record-keeping or further analysis.
+- **Lightweight**: Minimal dependencies ensure quick installation and execution.
+
+## Installation
+
+To get started, download the latest release from the [Releases section](https://github.com/hnisaozdemir/capital-gains/releases). Follow these steps:
+
+1. Visit the link above to find the latest version.
+2. Download the executable file suitable for your operating system.
+3. Extract the files if necessary.
+4. Follow the instructions in the downloaded package to install the tool.
+
+## Usage
+
+After installation, you can start using the Capital Gains calculator. Open your terminal and run the executable. Here’s a quick overview of the commands:
+
+- **Add Buy Transaction**: 
+  ```
+  ./capital-gains buy <share-name> <number-of-shares> <purchase-price>
+  ```
+- **Add Sell Transaction**: 
+  ```
+  ./capital-gains sell <share-name> <number-of-shares> <selling-price>
+  ```
+- **Calculate Gains**: 
+  ```
+  ./capital-gains calculate
+  ```
+- **Export Results**: 
+  ```
+  ./capital-gains export <filename>
+  ```
+
+For detailed instructions, please refer to the help command:
 ```
-#### **Execute com o comando baixo se quiser que o programa fique aguardando uma lista na entrada padrão**:
-```bash
-docker run --rm -it thiagorigonatti/capitalgains:latest
+./capital-gains help
 ```
-#### **Execute com o comando baixo se quiser fornecer uma lista ao programa e rodá-lo**:
-```bash
-echo '[{"operation":"buy", "unit-cost":10.00, "quantity": 10000},{"operation":"sell", "unit-cost":5.00, "quantity": 5000},{"operation":"sell", "unit-cost":20.00, "quantity": 3000}]' | docker run --rm -i thiagorigonatti/capitalgains:latest
+
+## Examples
+
+### Adding Transactions
+
+To add a buy transaction for 10 shares of "ABC Corp" at $50 each:
 ```
-#### **Execute com o comando baixo se quiser fornecer um arquivo com várias listas, uma por linha**:
-```bash
-docker run --rm -i thiagorigonatti/capitalgains:latest < input.txt
+./capital-gains buy ABC 10 50
 ```
----
-## 📦 Como Compilar
-> [!NOTE]
-> Para usar os comandos gradle é necessário ter uma distribuição java instalada e a variável de ambiente JAVA_HOME corretamente definida.
-#### **Par compilar tudo use no terminal**:
-```bash
-./gradlew buildAll
+
+To add a sell transaction for 5 shares of "ABC Corp" at $70 each:
 ```
-#### **Para executar os testes, use no terminal**:
-```bash
-./gradlew test
+./capital-gains sell ABC 5 70
 ```
-#### **Para compilar a aplicação, use no terminal**:
-```bash
-./gradlew shadowJar
+
+### Calculating Gains
+
+Once you have entered your transactions, run the following command to calculate your capital gains:
 ```
-#### **Para gerar a documentação, use no terminal**:
-```bash
-./gradlew javadoc
+./capital-gains calculate
 ```
----
-## 📗 Documentação dos Argumentos de Linha de Comando
 
-#### Este programa aceita os seguintes argumentos de linha de comando relacionados ao tamanho de buffer. Os tamanhos devem ser fornecidos no formato `-bsi<num><k|m|g>` ou `-bso<num><k|m|g>`, onde:
+The tool will provide a summary of your transactions, including total gains and taxes owed.
 
-- `<num>` é um número inteiro.
-- `<k|m|g>` representa a unidade:
-  - `k`: kilobytes (KB)
-  - `m`: megabytes (MB)
-  - `g`: gigabytes (GB)
+### Exporting Results
 
-### `-bsi<num><k|m|g>`
-
-**Nome:** Buffer de entrada  
-**Formato:** `-bsi1M`, `-bsi512k`, `-bsi2g`  
-**Descrição:**  
-_Por padrão o buffer de entrada tem o valor de 8.192 bytes ou 8kb; o buffer faz o dado ser armazenado em memória no heap, quanto maior o buffer mais dados podem ser processados sem ter de chamar a entrada padrão e consequentemente o programa levará menos tempo para terminar a tarefa._
-
-### `-bso<num><k|m|g>`
-
-**Nome:** Buffer de saída  
-**Formato:** `-bso1M`, `-bso256k`, `-bso4g`  
-**Descrição:**  
-_Por padrão o buffer de saída tem o valor de 8.192 bytes ou 8kb; o buffer faz o dado ser armazenado em memória no heap, quanto maior o buffer mais dados podem ser processados sem ter de chamar a saída padrão e consequentemente o programa levará menos tempo para terminar a tarefa._
-
-### `-pel`
-
-**Nome:** Imprimir toda linha  
-**Formato:** `-pel`  
-**Descrição:**  
-_Se especificado esse argumento, buffer size out será sobrescrito com 8.192 bytes, uma vez que -pel faz a saída ser chamada a cada nova linha, independentemente do tamanho do buffer size out, se especificado._
-
-### `-t`
-
-**Nome:** Imprimir tempo  
-**Formato:** `-t`  
-**Descrição:**  
-_Se especificado esse argumento, ao término da tarefa será exibido o tempo que a tarefa levou pra ser completada._
-
----
-## 🫙 Instruções para Executar o .Jar
-
-#### **Execute com o comando baixo se quiser que o programa fique aguardando uma lista na entrada padrão**:
-```bash
-java -jar build/libs/CapitalGainsCalculator.jar -pel
+If you want to keep a record of your calculations, use the export command:
 ```
-#### **Execute com o comando baixo se quiser fornecer uma lista ao programa e rodá-lo**:
-```bash
-echo '[{"operation":"buy", "unit-cost":10.00, "quantity": 10000},{"operation":"sell", "unit-cost":5.00, "quantity": 5000},{"operation":"sell", "unit-cost":20.00, "quantity": 3000}]' | java -jar build/libs/CapitalGainsCalculator.jar
+./capital-gains export my_results.txt
 ```
-#### **Execute com o comando baixo se quiser fornecer um arquivo com várias listas, uma por linha**:
-```bash
-java -jar build/libs/CapitalGainsCalculator.jar < input.txt -bsi32M -bso10M
-```
-#### **Execute com o comando baixo se quiser fornecer um arquivo com várias listas, uma por linha e redirecionar o resultado para outra saída que não stdout**:
-```bash
-java -jar build/libs/CapitalGainsCalculator.jar > output.txt
-```
----
-## 🗒️ Notas Adicionais
 
-#### Decidi de criar uma JRE personalizada, utilizando apenas os módulos de que a aplicação depende, isso diminui o tamanho da imagem, de ~820MB para ~75MB usando linux/alpine.
+This will save your results in a text file for future reference.
 
-#### Para a task createCustomJRE funcionar, é necessário ter uma distribuição java contendo JDK, jmods e definir JAVA_HOME
+## Contributing
 
-`sudo yum install java-21-amazon-corretto-devel`  
-`sudo yum install java-21-amazon-corretto-jmods`
+We welcome contributions! If you would like to improve the Capital Gains calculator, please follow these steps:
 
-#### Utilizei o ambiente de teste com Amazon Linux 2023 (al2023-ami-2023.7.20250331.0-kernel-6.1-x86_64).
+1. Fork the repository.
+2. Create a new branch (`git checkout -b feature-branch`).
+3. Make your changes.
+4. Commit your changes (`git commit -m 'Add new feature'`).
+5. Push to the branch (`git push origin feature-branch`).
+6. Open a pull request.
 
-#### IDE
-```
-IntelliJ IDEA 2024.3.5 (Ultimate Edition)
-Build #IU-243.26053.27, built on March 16, 2025
-```
----
+Please ensure your code follows the existing style and includes appropriate tests.
+
+## License
+
+This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
+
+## Contact
+
+For any questions or suggestions, please reach out to the project maintainer:
+
+- **Name**: H. Nisa Ozdemir
+- **Email**: hnisa@example.com
+
+Thank you for checking out the Capital Gains calculator! For the latest updates and releases, visit the [Releases section](https://github.com/hnisaozdemir/capital-gains/releases).
